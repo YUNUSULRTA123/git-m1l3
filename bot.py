@@ -12,7 +12,7 @@ def start(message):
 
 @bot.message_handler(commands=['info'])
 def info(message):
-    bot.reply_to(message, "Мои команды: /start ,/ban ,info")
+    bot.reply_to(message, "Мои команды: /start ,/ban ,/info")
     bot.reply_to(message, "Используйте меня с умом")
     
 @bot.message_handler(commands=['ban'])
