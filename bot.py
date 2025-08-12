@@ -69,7 +69,7 @@ def echo_message(message):
             bot.reply_to(message, f"""Пользователь @{message.reply_to_message.from_user.username} был забанен по причине отправки ссылок.
 Отправлять ссылки в данный чат  КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО !!!!!""")
         except Exception as e:
-            bot.reply_to(message, f"Не удалось забанить пользователя: {e}")
+            bot.reply_to(message, "Не удалось забанить пользователя")
     else:    
         bot.reply_to(message, message.text) 
 if __name__ == "__main__":
