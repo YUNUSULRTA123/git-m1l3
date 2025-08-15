@@ -42,10 +42,42 @@ def unban_user(message):
         if user_status == 'administrator' or user_status == 'creator':
             bot.reply_to(message, "Невозможно забанить или же разбанить администратора.")
         else:
-            bot.unban_chat_member(chat_id, user_id) # пользователь с user_id будет забанен в чате с chat_id
+            bot.unban_chat_member(chat_id, user_id) # пользователь с user_id будет разбанен в чате с chat_id
             bot.reply_to(message, f"Пользователь @{message.reply_to_message.from_user.username} был разбанен.")
     else:
-        bot.reply_to(message, "Эта команда должна быть использована в ответ на сообщение пользователя, которого вы хотите забанить.")
+        bot.reply_to(message, "Эта команда должна быть использована в ответ на сообщение пользователя, которого вы хотите разбанить.")
+
+@bot.message_handler(commands=['mute'])
+def mute_user(message):
+    if message.reply_to_message: #проверка на то, что эта команда была вызвана в ответ на сообщение 
+        chat_id = message.chat.id # сохранение id чата
+         # сохранение id и статуса пользователя, отправившего сообщение
+        user_id = message.reply_to_message.from_user.id
+        user_status = bot.get_chat_member(chat_id, user_id).status 
+         # проверка пользователя
+        if user_status == 'administrator' or user_status == 'creator':
+            bot.reply_to(message, "Невозможно замютить администратора.")
+        else:
+            bot.restrict_chat_member(chat_id, user_id, can_send_messages=False) # пользователь с user_id будет забанен в чате с chat_id
+            bot.reply_to(message, f"Пользователь @{message.reply_to_message.from_user.username} был замютен.")
+    else:
+        bot.reply_to(message, "Эта команда должна быть использована в ответ на сообщение пользователя, которого вы хотите замютить.")
+
+@bot.message_handler(commands=['unmute'])
+def unmute_user(message):
+    if message.reply_to_message: #проверка на то, что эта команда была вызвана в ответ на сообщение 
+        chat_id = message.chat.id # сохранение id чата
+         # сохранение id и статуса пользователя, отправившего сообщение
+        user_id = message.reply_to_message.from_user.id
+        user_status = bot.get_chat_member(chat_id, user_id).status 
+         # проверка пользователя
+        if user_status == 'administrator' or user_status == 'creator':
+            bot.reply_to(message, "Невозможно замютить или же размютить администратора.")
+        else:
+            bot.restrict_chat_member(chat_id, user_id, can_send_messages=True) # пользователь с user_id будет забанен в чате с chat_id
+            bot.reply_to(message, f"Пользователь @{message.reply_to_message.from_user.username} был размютен.")
+    else:
+        bot.reply_to(message, "Эта команда должна быть использована в ответ на сообщение пользователя, которого вы хотите размютить.")
 
 @bot.message_handler(content_types=['new_chat_members'])
 def make_some(message):
@@ -71,7 +103,8 @@ def echo_message(message):
         except Exception as e:
             bot.reply_to(message, "Не удалось забанить пользователя")
     else:    
-        bot.reply_to(message, message.text) 
+        bot.reply_to(message, message.text)
+
 if __name__ == "__main__":
     print("Бот запустился...")
     bot.polling()
